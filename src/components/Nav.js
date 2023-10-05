@@ -9,7 +9,12 @@ import {
   signOut
  } from 'firebase/auth';
 
+
+
 const Nav = () => {
+
+  const initialUserData = localStorage.getItem('userData') ? 
+  JSON.parse(localStorage.getItem('userData')) : {}
 
   const [show, setShow] = useState(false);
   const { pathname } = useLocation();
@@ -17,7 +22,7 @@ const Nav = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(initialUserData);
 
 
 
@@ -53,6 +58,7 @@ const Nav = () => {
     .then(result => {
       console.log(result.user.displayName, result.user.email, result.user.photoURL);
       setUserData(result.user);
+      localStorage.setItem('userData', JSON.stringify(result.user));
     })
     .catch(error => {
       console.error(error);

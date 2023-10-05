@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import requests from '../api/requests'
-import axios from '../api/axios'
+import instance from '../api/axios'
 import './Banner.css'
 import {truncate} from '../utils/truncate'
 import styled from 'styled-components'
@@ -15,13 +15,13 @@ const Banner = () => {
   }, [])
 
   const fetchData = async () => { 
-    const response = await axios.get(requests.fetchNowPlaying)
+    const response = await instance.get(requests.fetchNowPlaying)
 
     const movieId = response.data.results[
       Math.floor(Math.random() * response.data.results.length)
     ].id;
 
-    const {data: movieDetail} = await axios.get(`movie/${movieId}`, {
+    const {data: movieDetail} = await instance.get(`movie/${movieId}`, {
       params: { append_to_response: 'videos'}
     });
 
@@ -78,7 +78,6 @@ const Banner = () => {
               >
                 Play</button>}
           </div>
-
           <p className='banner__description'>
             {truncate(movie.overview, 130)}
           </p>
